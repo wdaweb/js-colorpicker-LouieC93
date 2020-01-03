@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh=tw">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Game Boy Color Picker</title>
+</head>
+
+<body>
+    <div id="main">
+        <div id="gameboy">
+            <div id="scroll"></div>
+            <!-- 螢幕區 -->
+            <div id="view">
+                <div id="screen">
+                    <p id="hex">Game Start</p>
+                </div>
+                <span class="dot"></span>
+            </div>
+            <!-- 按鍵區 -->
+            <div id="control">
+                <!-- 左側RGB -->
+                <div id="slidebar">
+                    <!-- R -->
+                    <div id="areaR" class="rgb">
+                        <input type="range" min="0" max="255" step="1" name="red" id="red">
+                        <button id="rr" class="btn">R</button>
+                    </div>
+                    <!-- G -->
+                    <div id="areaG" class="rgb">
+                        <input type="range" min="0" max="255" step="1" name="green" id="green">
+                        <button id="gg" class="btn">G</button>
+                    </div>
+                    <!-- B -->
+                    <div id="areaB" class="rgb">
+                        <input type="range" min="0" max="255" step="1" name="blue" id="blue">
+                        <button id="bb" class="btn">B</button>
+                    </div>
+                </div>
+                <!-- 右側+- -->
+                <div id="math">
+                    <button id="add" class="btn">+</button>
+                    <button id="minus" class="btn">-</button>
+                </div>
+                <!-- 底部random -->
+                <div id="bottom">
+                    <button id="random">Random</button>
+                </div>
+                <!-- speaker -->
+                <div id="speaker">
+                    <div class="line l1"></div>
+                    <div class="line l2"></div>
+                    <div class="line l3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //  產生隨機顏色
+        var rgb_r = Math.floor(Math.random() * 256);
+        var rgb_g = Math.floor(Math.random() * 256);
+        var rgb_b = Math.floor(Math.random() * 256);
+        // 螢幕背景與文字
+        var screen= document.getElementById('screen');
+        var hex= document.getElementById('hex');
+
+        
+        //  建立更新重整網頁隨機數值、更新點擊按鈕隨機數值、更新彈出視窗輸入數值函示
+        function updateRefresh() {
+            // 網頁重整數值 ansR & inputR.value => rgb_r(screen)
+            screen.style.background= `rgb(${rgb_r}, ${rgb_g}, ${rgb_b})`;
+            hex.style.color= `rgb(${255-rgb_r}, ${255-rgb_g}, ${255-rgb_b})`;
+            hex.textContent=`RGB(${rgb_r}, ${rgb_g}, ${rgb_b})`;
+            inputR.value= rgb_r;
+            inputG.value= rgb_g;
+            inputB.value= rgb_b;
+        }
+
+        // 點擊視窗事件
+        document.getElementById('rr').onclick = function () { ask('r'); };
+        document.getElementById('gg').onclick = function () { ask('g'); };
+        document.getElementById('bb').onclick = function () { ask('b'); };
+        document.getElementById('random').onclick = function () { ask('ran'); };
+        // prompt & random button function
+        function ask(clr) {
+        switch (clr) {
+            case 'r':
+                ansR = prompt('請輸入0-255間的整數', rgb_r);
+                if (ansR >= 0 && ansR <= 255 && (ansR % 1) == 0 && ansR!=null) {
+                    updatePrompt();
+                }
+                else ask('r');
+                break;
+            case 'g':
+                ansG = prompt('請輸入0-255間的整數', rgb_g);
+                if (ansG >= 0 && ansG <= 255 && (ansG % 1) == 0 && ansG!=null) {
+                    updatePrompt();
+                }
+                else ask('g');
+                break;
+            case 'b':
+                ansB = prompt('請輸入0-255間的整數', rgb_b);
+                if (ansB >= 0 && ansB <= 255 && (ansB % 1) == 0 && ansB!=null) {
+                    updatePrompt();
+                }
+                else ask('b');
+                break;
+            case 'ran':
+                ansR = Math.floor(Math.random() * 256);
+                ansG = Math.floor(Math.random() * 256);
+                ansB = Math.floor(Math.random() * 256);
+                updatePrompt();
+                break;
+            }
+        }
+        // 接住prompt輸入數值＆防呆
+        let ansR = rgb_r;
+        let ansG = rgb_g;
+        let ansB = rgb_b;
+        function updatePrompt() {
+            // 輸入＆隨機按鈕數值  inputR => ansR(screen)
+            screen.style.background = `rgb(${ansR}, ${ansG}, ${ansB})`;
+            hex.style.color= `rgb(${255-ansR}, ${255-ansG}, ${255-ansB})`;
+            hex.textContent=`RGB(${ansR}, ${ansG}, ${ansB})`;
+            inputR.value= ansR;
+            inputG.value= ansG;
+            inputB.value= ansB;
+        }
+
+
+        // 接住input數值
+        let inputR= document.getElementById('red');
+        let inputG= document.getElementById('green');
+        let inputB= document.getElementById('blue');
+        function updateSlide() {
+            // 拖曳數值
+            screen.style.background = `rgb(${ansR}, ${ansG}, ${ansB})`;
+            hex.style.color= `rgb(${255-ansR}, ${255-ansG}, ${255-ansB})`;
+            // ansR= inputR.value;
+            // ansG= inputG.value;
+            // ansB= inputB.value;
+        }
+        
+
+
+
+        // 建立拖曳事件
+        inputR.oninput= function() {getInput('r')};
+        inputG.oninput= function() {getInput('g')};
+        inputB.oninput= function() {getInput('b')}
+        //  取得拖曳值
+        function getInput(num) {
+            switch (num) {
+                case 'r':
+
+                break;
+                case 'g':
+
+                break;
+                case 'b':
+
+                break;
+
+            }
+        }
+
+        // 按住隨機按鈕
+        // document.getElementById('random').onmousedown = function () { 
+        //     setInterval(ask('ran'), 300);
+        // };
+        // document.getElementById('random').onmouseup = function () { 
+        //     clearInterval(ask('ran'));
+        // };
+
+
+        // 讓螢幕跟slidebar數值重整時刷新
+        updateRefresh();
+    </script>
+</body>
+
+</html>
